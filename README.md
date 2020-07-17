@@ -5,7 +5,7 @@ This repo is a fork of [jack-audio-tools](https://github.com/SpotlightKid/jack-a
 
 It is used by [calvo](https://github.com/ajboni/calvo) for interacting with jack and lv2 plugins.
 
-Documentation can be found at: ajboni.github.io/calvo-cli-tools
+Documentation can be found at: https://ajboni.github.io/calvo-cli-tools
 
 
 # JACK 
