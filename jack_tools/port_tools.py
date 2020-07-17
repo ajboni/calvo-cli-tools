@@ -5,14 +5,13 @@
 import jack
 import json
 import argparse
-from .connect_ports import connect_ports
 
 
-def clear_port(args):
+def clear_port(port, client_name="jack_client", **kwarg):
     """ Removes all incoming/outgoing connections from/to a port
 
     Arguments:
-        port: (string) -- Port name clear.
+        port: (string) -- Port name to clear.
 
     Raises:
         ConnectionError: "If JACK client could not connect."
@@ -20,25 +19,85 @@ def clear_port(args):
     """
 
     try:
-        client = jack.Client(args.client_name)
+        client = jack.Client(client_name)
     except jack.JackError as exc:
         raise ConnectionError("Could not create JACK client: {}".format(exc))
 
     try:
-        port = client.get_port_by_name(args.port)
-        ports = client.get_all_connections(port)
+        jack_port = client.get_port_by_name(port)
+        jack_ports = client.get_all_connections(port)
 
-        for cport in ports:
+        for cport in jack_ports:
             connect_ports(
-                port.name, cport.name, args.client_name, True)
+                port.name, cport.name, client_name, True)
 
     except jack.JackError as exc:
         raise ValueError("Could not create JACK client: {}".format(exc))
 
 
-def _connect_ports(args):
-    connect_ports(
-        args.source, args.destination, args.client_name)
+def connect_ports(source, destination, client_name, disconnect=False, **kwarg):
+    """ Connects/Disconnects two JACK ports.
+
+    Parameters
+    ----------
+    src: [string]
+        Source port name.
+    dst: [string]
+        Destination port name.
+    client_name: [string]
+        JACK Client name.
+    disconnect: bool, optional
+        Perform a disconnection instead, by default False
+
+    Raises
+    ------
+    ConnectionError
+        Could not create JACK client:
+    ValueError
+        Port names not found.
+    TypeError
+        Port types are not compatible.
+    """
+
+    try:
+        client = jack.Client(client_name)
+    except jack.JackError as exc:
+        raise ConnectionError("Could not create JACK client: {}".format(exc))
+
+    try:
+        src_port = client.get_port_by_name(source)
+        dst_port = client.get_port_by_name(destination)
+    except jack.JackError as exc:
+        raise ValueError("Could not get JACK port: {}".format(exc))
+
+    # Check for src=output
+    if not dst_port.is_input:
+        raise TypeError(
+            f'Error connecting ports: {destination} is not an INPUT port!')
+
+    # Check for dst=input
+    if not src_port.is_output:
+        raise TypeError(
+            f'Error connecting ports: {source} is not an OUTPUT port!')
+
+    # Check both port to be audio
+    if src_port.is_audio and not dst_port.is_audio or dst_port.is_audio and not dst_port.is_audio:
+        raise TypeError(
+            'Error connecting ports: Both ports are expected to be the same type.')
+
+    # Check both midi ports
+    if src_port.is_midi and not dst_port.is_midi or dst_port.is_midi and not dst_port.is_midi:
+        raise TypeError(
+            'Error connecting ports: Both ports are expected to be the same type.')
+
+    try:
+        if not disconnect:
+            client.connect(src_port, dst_port)
+        else:
+            client.disconnect(src_port, dst_port)
+    except jack.JackError as exc:
+        raise ValueError(
+            f'Could not make the connection between {source} => {destination} : {exc}')
 
 
 if __name__ == '__main__':
@@ -60,12 +119,20 @@ if __name__ == '__main__':
     parser_connect = subparses.add_parser(
         'connect', help='Connect to another port')
 
-    parser_connect.add_argument('source', help='Source port.')
-    parser_connect.add_argument('destination', help='Destination port.')
-    parser_connect.set_defaults(func=_connect_ports)
+    parser_connect.add_argument(
+        'source',
+        help="Source port. It must be an output port. It must be same type (audio/midi) as dst)")
+    parser_connect.add_argument(
+        'destination',
+        help="Destination port. It must be an input port. It must be same type (audio/midi) as src")
+    parser_connect.add_argument(
+        '-rm', '--disconnect', '--remove', '--rm',
+        action='store_true',
+        default=False,
+        help="Disconnect both ports.")
+
+    parser_connect.set_defaults(func=connect_ports)
 
     arguments = parser.parse_args()
-    arguments.func(arguments)
-
-# connect.set_defaults(func=connect_ports.connect_ports(
-#     args.source, args.destination, "a", False))
+    print(arguments)
+    arguments.func(**vars(arguments))
