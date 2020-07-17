@@ -33,14 +33,13 @@
 import jack
 import json
 import argparse
-from .connect_ports import connect_ports
 
 
-def clear_port(args):
+def clear_port(port, client_name=&#34;jack_client&#34;, **kwarg):
     &#34;&#34;&#34; Removes all incoming/outgoing connections from/to a port
 
     Arguments:
-        port: (string) -- Port name clear.
+        port: (string) -- Port name to clear.
 
     Raises:
         ConnectionError: &#34;If JACK client could not connect.&#34;
@@ -48,25 +47,85 @@ def clear_port(args):
     &#34;&#34;&#34;
 
     try:
-        client = jack.Client(args.client_name)
+        client = jack.Client(client_name)
     except jack.JackError as exc:
         raise ConnectionError(&#34;Could not create JACK client: {}&#34;.format(exc))
 
     try:
-        port = client.get_port_by_name(args.port)
-        ports = client.get_all_connections(port)
+        jack_port = client.get_port_by_name(port)
+        jack_ports = client.get_all_connections(port)
 
-        for cport in ports:
+        for cport in jack_ports:
             connect_ports(
-                port.name, cport.name, args.client_name, True)
+                port.name, cport.name, client_name, True)
 
     except jack.JackError as exc:
         raise ValueError(&#34;Could not create JACK client: {}&#34;.format(exc))
 
 
-def _connect_ports(args):
-    connect_ports(
-        args.source, args.destination, args.client_name)
+def connect_ports(source, destination, client_name, disconnect=False, **kwarg):
+    &#34;&#34;&#34; Connects/Disconnects two JACK ports.
+
+    Parameters
+    ----------
+    src: [string]
+        Source port name.
+    dst: [string]
+        Destination port name.
+    client_name: [string]
+        JACK Client name.
+    disconnect: bool, optional
+        Perform a disconnection instead, by default False
+
+    Raises
+    ------
+    ConnectionError
+        Could not create JACK client:
+    ValueError
+        Port names not found.
+    TypeError
+        Port types are not compatible.
+    &#34;&#34;&#34;
+
+    try:
+        client = jack.Client(client_name)
+    except jack.JackError as exc:
+        raise ConnectionError(&#34;Could not create JACK client: {}&#34;.format(exc))
+
+    try:
+        src_port = client.get_port_by_name(source)
+        dst_port = client.get_port_by_name(destination)
+    except jack.JackError as exc:
+        raise ValueError(&#34;Could not get JACK port: {}&#34;.format(exc))
+
+    # Check for src=output
+    if not dst_port.is_input:
+        raise TypeError(
+            f&#39;Error connecting ports: {destination} is not an INPUT port!&#39;)
+
+    # Check for dst=input
+    if not src_port.is_output:
+        raise TypeError(
+            f&#39;Error connecting ports: {source} is not an OUTPUT port!&#39;)
+
+    # Check both port to be audio
+    if src_port.is_audio and not dst_port.is_audio or dst_port.is_audio and not dst_port.is_audio:
+        raise TypeError(
+            &#39;Error connecting ports: Both ports are expected to be the same type.&#39;)
+
+    # Check both midi ports
+    if src_port.is_midi and not dst_port.is_midi or dst_port.is_midi and not dst_port.is_midi:
+        raise TypeError(
+            &#39;Error connecting ports: Both ports are expected to be the same type.&#39;)
+
+    try:
+        if not disconnect:
+            client.connect(src_port, dst_port)
+        else:
+            client.disconnect(src_port, dst_port)
+    except jack.JackError as exc:
+        raise ValueError(
+            f&#39;Could not make the connection between {source} =&gt; {destination} : {exc}&#39;)
 
 
 if __name__ == &#39;__main__&#39;:
@@ -88,15 +147,23 @@ if __name__ == &#39;__main__&#39;:
     parser_connect = subparses.add_parser(
         &#39;connect&#39;, help=&#39;Connect to another port&#39;)
 
-    parser_connect.add_argument(&#39;source&#39;, help=&#39;Source port.&#39;)
-    parser_connect.add_argument(&#39;destination&#39;, help=&#39;Destination port.&#39;)
-    parser_connect.set_defaults(func=_connect_ports)
+    parser_connect.add_argument(
+        &#39;source&#39;,
+        help=&#34;Source port. It must be an output port. It must be same type (audio/midi) as dst)&#34;)
+    parser_connect.add_argument(
+        &#39;destination&#39;,
+        help=&#34;Destination port. It must be an input port. It must be same type (audio/midi) as src&#34;)
+    parser_connect.add_argument(
+        &#39;-rm&#39;, &#39;--disconnect&#39;, &#39;--remove&#39;, &#39;--rm&#39;,
+        action=&#39;store_true&#39;,
+        default=False,
+        help=&#34;Disconnect both ports.&#34;)
+
+    parser_connect.set_defaults(func=connect_ports)
 
     arguments = parser.parse_args()
-    arguments.func(arguments)
-
-# connect.set_defaults(func=connect_ports.connect_ports(
-#     args.source, args.destination, &#34;a&#34;, False))</code></pre>
+    print(arguments)
+    arguments.func(**vars(arguments))</code></pre>
 </details>
 </section>
 <section>
@@ -107,12 +174,12 @@ if __name__ == &#39;__main__&#39;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="calvo_cli_tools.jack_tools.port_tools.clear_port"><code class="name flex">
-<span>def <span class="ident">clear_port</span></span>(<span>args)</span>
+<span>def <span class="ident">clear_port</span></span>(<span>port, client_name='jack_client', **kwarg)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Removes all incoming/outgoing connections from/to a port</p>
 <h2 id="arguments">Arguments</h2>
-<p>port: (string) &ndash; Port name clear.</p>
+<p>port: (string) &ndash; Port name to clear.</p>
 <h2 id="raises">Raises</h2>
 <dl>
 <dt><code>ConnectionError</code></dt>
@@ -124,11 +191,11 @@ if __name__ == &#39;__main__&#39;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def clear_port(args):
+<pre><code class="python">def clear_port(port, client_name=&#34;jack_client&#34;, **kwarg):
     &#34;&#34;&#34; Removes all incoming/outgoing connections from/to a port
 
     Arguments:
-        port: (string) -- Port name clear.
+        port: (string) -- Port name to clear.
 
     Raises:
         ConnectionError: &#34;If JACK client could not connect.&#34;
@@ -136,20 +203,114 @@ if __name__ == &#39;__main__&#39;:
     &#34;&#34;&#34;
 
     try:
-        client = jack.Client(args.client_name)
+        client = jack.Client(client_name)
     except jack.JackError as exc:
         raise ConnectionError(&#34;Could not create JACK client: {}&#34;.format(exc))
 
     try:
-        port = client.get_port_by_name(args.port)
-        ports = client.get_all_connections(port)
+        jack_port = client.get_port_by_name(port)
+        jack_ports = client.get_all_connections(port)
 
-        for cport in ports:
+        for cport in jack_ports:
             connect_ports(
-                port.name, cport.name, args.client_name, True)
+                port.name, cport.name, client_name, True)
 
     except jack.JackError as exc:
         raise ValueError(&#34;Could not create JACK client: {}&#34;.format(exc))</code></pre>
+</details>
+</dd>
+<dt id="calvo_cli_tools.jack_tools.port_tools.connect_ports"><code class="name flex">
+<span>def <span class="ident">connect_ports</span></span>(<span>source, destination, client_name, disconnect=False, **kwarg)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Connects/Disconnects two JACK ports.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>src</code></strong> :&ensp;<code>[string]</code></dt>
+<dd>Source port name.</dd>
+<dt><strong><code>dst</code></strong> :&ensp;<code>[string]</code></dt>
+<dd>Destination port name.</dd>
+<dt><strong><code>client_name</code></strong> :&ensp;<code>[string]</code></dt>
+<dd>JACK Client name.</dd>
+<dt><strong><code>disconnect</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a disconnection instead, by default False</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ConnectionError</code></dt>
+<dd>Could not create JACK client:</dd>
+<dt><code>ValueError</code></dt>
+<dd>Port names not found.</dd>
+<dt><code>TypeError</code></dt>
+<dd>Port types are not compatible.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def connect_ports(source, destination, client_name, disconnect=False, **kwarg):
+    &#34;&#34;&#34; Connects/Disconnects two JACK ports.
+
+    Parameters
+    ----------
+    src: [string]
+        Source port name.
+    dst: [string]
+        Destination port name.
+    client_name: [string]
+        JACK Client name.
+    disconnect: bool, optional
+        Perform a disconnection instead, by default False
+
+    Raises
+    ------
+    ConnectionError
+        Could not create JACK client:
+    ValueError
+        Port names not found.
+    TypeError
+        Port types are not compatible.
+    &#34;&#34;&#34;
+
+    try:
+        client = jack.Client(client_name)
+    except jack.JackError as exc:
+        raise ConnectionError(&#34;Could not create JACK client: {}&#34;.format(exc))
+
+    try:
+        src_port = client.get_port_by_name(source)
+        dst_port = client.get_port_by_name(destination)
+    except jack.JackError as exc:
+        raise ValueError(&#34;Could not get JACK port: {}&#34;.format(exc))
+
+    # Check for src=output
+    if not dst_port.is_input:
+        raise TypeError(
+            f&#39;Error connecting ports: {destination} is not an INPUT port!&#39;)
+
+    # Check for dst=input
+    if not src_port.is_output:
+        raise TypeError(
+            f&#39;Error connecting ports: {source} is not an OUTPUT port!&#39;)
+
+    # Check both port to be audio
+    if src_port.is_audio and not dst_port.is_audio or dst_port.is_audio and not dst_port.is_audio:
+        raise TypeError(
+            &#39;Error connecting ports: Both ports are expected to be the same type.&#39;)
+
+    # Check both midi ports
+    if src_port.is_midi and not dst_port.is_midi or dst_port.is_midi and not dst_port.is_midi:
+        raise TypeError(
+            &#39;Error connecting ports: Both ports are expected to be the same type.&#39;)
+
+    try:
+        if not disconnect:
+            client.connect(src_port, dst_port)
+        else:
+            client.disconnect(src_port, dst_port)
+    except jack.JackError as exc:
+        raise ValueError(
+            f&#39;Could not make the connection between {source} =&gt; {destination} : {exc}&#39;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -171,6 +332,7 @@ if __name__ == &#39;__main__&#39;:
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="calvo_cli_tools.jack_tools.port_tools.clear_port" href="#calvo_cli_tools.jack_tools.port_tools.clear_port">clear_port</a></code></li>
+<li><code><a title="calvo_cli_tools.jack_tools.port_tools.connect_ports" href="#calvo_cli_tools.jack_tools.port_tools.connect_ports">connect_ports</a></code></li>
 </ul>
 </li>
 </ul>
