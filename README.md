@@ -3,6 +3,11 @@
 A collection of utilities and tools for the [JACK] audio ecosystem.
 This repo is a fork of [jack-audio-tools](https://github.com/SpotlightKid/jack-audio-tools) by [SpotlightKid](https://github.com/SpotlightKid) which was immensely helpful for me to initiate with JACK and python.
 
+It is used by [calvo](https://github.com/ajboni/calvo) for interacting with jack and lv2 plugins.
+
+Documentation can be found at: ajboni.github.io/calvo-cli-tools
+
+
 # JACK 
 
 ## client
