@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.4" />
+<title>calvo_cli_tools.lv2.plugin_info API documentation</title>
+<meta name="description" content="Generate JSON document with information about a single or all installed LV2 plugins." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>calvo_cli_tools.lv2.plugin_info</code></h1>
+</header>
+<section id="section-intro">
+<p>Generate JSON document with information about a single or all installed LV2 plugins.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># MIT License
+
+# Copyright (c) 2019 Christopher Arndt
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the &#34;Software&#34;), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#!/usr/bin/env python
+&#34;&#34;&#34;Generate JSON document with information about a single or all installed LV2 plugins.&#34;&#34;&#34;
+
+import os
+from math import fmod
+from os.path import dirname
+
+import lilv
+
+
+NS_MOD = &#34;http://moddevices.com/ns/mod#&#34;
+NS_PATCH = &#39;http://lv2plug.in/ns/ext/patch#&#39;
+NS_PORT_PROPERTIES = &#34;http://lv2plug.in/ns/ext/port-props#&#34;
+NS_PRESET = &#39;http://lv2plug.in/ns/ext/presets#&#39;
+NS_UNITS = &#34;http://lv2plug.in/ns/extensions/units#&#34;
+
+LV2_CATEGORIES = {
+    &#39;AllpassPlugin&#39;: (&#39;Filter&#39;, &#39;Allpass&#39;),
+    &#39;AmplifierPlugin&#39;: (&#39;Dynamics&#39;, &#39;Amplifier&#39;),
+    &#39;AnalyserPlugin&#39;: (&#39;Utility&#39;, &#39;Analyser&#39;),
+    &#39;BandpassPlugin&#39;: (&#39;Filter&#39;, &#39;Bandpass&#39;),
+    &#39;ChorusPlugin&#39;: (&#39;Modulator&#39;, &#39;Chorus&#39;),
+    &#39;CombPlugin&#39;: (&#39;Filter&#39;, &#39;Comb&#39;),
+    &#39;CompressorPlugin&#39;: (&#39;Dynamics&#39;, &#39;Compressor&#39;),
+    &#39;ConstantPlugin&#39;: (&#39;Generator&#39;, &#39;Constant&#39;),
+    &#39;ConverterPlugin&#39;: (&#39;Utility&#39;, &#39;Converter&#39;),
+    &#39;DelayPlugin&#39;: (&#39;Delay&#39;,),
+    &#39;DistortionPlugin&#39;: (&#39;Distortion&#39;,),
+    &#39;DynamicsPlugin&#39;: (&#39;Dynamics&#39;,),
+    &#39;EQPlugin&#39;: (&#39;Filter&#39;, &#39;Equaliser&#39;),
+    &#39;ExpanderPlugin&#39;: (&#39;Dynamics&#39;, &#39;Expander&#39;),
+    &#39;FilterPlugin&#39;: (&#39;Filter&#39;,),
+    &#39;FlangerPlugin&#39;: (&#39;Modulator&#39;, &#39;Flanger&#39;),
+    &#39;FunctionPlugin&#39;: (&#39;Utility&#39;, &#39;Function&#39;),
+    &#39;GatePlugin&#39;: (&#39;Dynamics&#39;, &#39;Gate&#39;),
+    &#39;GeneratorPlugin&#39;: (&#39;Generator&#39;,),
+    &#39;HighpassPlugin&#39;: (&#39;Filter&#39;, &#39;Highpass&#39;),
+    &#39;InstrumentPlugin&#39;: (&#39;Generator&#39;, &#39;Instrument&#39;),
+    &#39;LimiterPlugin&#39;: (&#39;Dynamics&#39;, &#39;Limiter&#39;),
+    &#39;LowpassPlugin&#39;: (&#39;Filter&#39;, &#39;Lowpass&#39;),
+    &#39;MIDIPlugin&#39;: (&#39;MIDI&#39;, &#39;Utility&#39;),
+    &#39;MixerPlugin&#39;: (&#39;Utility&#39;, &#39;Mixer&#39;),
+    &#39;ModulatorPlugin&#39;: (&#39;Modulator&#39;,),
+    &#39;MultiEQPlugin&#39;: (&#39;Filter&#39;, &#39;Equaliser&#39;, &#39;Multiband&#39;),
+    &#39;OscillatorPlugin&#39;: (&#39;Generator&#39;, &#39;Oscillator&#39;),
+    &#39;ParaEQPlugin&#39;: (&#39;Filter&#39;, &#39;Equaliser&#39;, &#39;Parametric&#39;),
+    &#39;PhaserPlugin&#39;: (&#39;Modulator&#39;, &#39;Phaser&#39;),
+    &#39;PitchPlugin&#39;: (&#39;Spectral&#39;, &#39;Pitch Shifter&#39;),
+    &#39;ReverbPlugin&#39;: (&#39;Reverb&#39;,),
+    &#39;SimulatorPlugin&#39;: (&#39;Simulator&#39;,),
+    &#39;SpatialPlugin&#39;: (&#39;Spatial&#39;,),
+    &#39;SpectralPlugin&#39;: (&#39;Spectral&#39;,),
+    &#39;UtilityPlugin&#39;: (&#39;Utility&#39;,),
+    &#39;WaveshaperPlugin&#39;: (&#39;Distortion&#39;, &#39;Waveshaper&#39;),
+}
+
+LV2_UNITS = units = {
+    &#39;bar&#39;: (&#34;bars&#34;, &#34;%f bars&#34;, &#34;bars&#34;),
+    &#39;beat&#39;: (&#34;beats&#34;, &#34;%f beats&#34;, &#34;beats&#34;),
+    &#39;bpm&#39;: (&#34;beats per minute&#34;, &#34;%f BPM&#34;, &#34;BPM&#34;),
+    &#39;cent&#39;: (&#34;cents&#34;, &#34;%f ct&#34;, &#34;ct&#34;),
+    &#39;cm&#39;: (&#34;centimetres&#34;, &#34;%f cm&#34;, &#34;cm&#34;),
+    &#39;coef&#39;: (&#34;coefficient&#34;, &#34;* %f&#34;, &#34;*&#34;),
+    &#39;db&#39;: (&#34;decibels&#34;, &#34;%f dB&#34;, &#34;dB&#34;),
+    &#39;degree&#39;: (&#34;degrees&#34;, &#34;%f deg&#34;, &#34;deg&#34;),
+    &#39;frame&#39;: (&#34;audio frames&#34;, &#34;%f frames&#34;, &#34;frames&#34;),
+    &#39;hz&#39;: (&#34;hertz&#34;, &#34;%f Hz&#34;, &#34;Hz&#34;),
+    &#39;inch&#39;: (&#34;inches&#34;, &#34;&#34;&#34;%f\&#34;&#34;&#34;&#34;, &#34;in&#34;),
+    &#39;khz&#39;: (&#34;kilohertz&#34;, &#34;%f kHz&#34;, &#34;kHz&#34;),
+    &#39;km&#39;: (&#34;kilometres&#34;, &#34;%f km&#34;, &#34;km&#34;),
+    &#39;mhz&#39;: (&#34;megahertz&#34;, &#34;%f MHz&#34;, &#34;MHz&#34;),
+    &#39;midiNote&#39;: (&#34;MIDI note&#34;, &#34;MIDI note %d&#34;, &#34;note&#34;),
+    &#39;mile&#39;: (&#34;miles&#34;, &#34;%f mi&#34;, &#34;mi&#34;),
+    &#39;min&#39;: (&#34;minutes&#34;, &#34;%f mins&#34;, &#34;min&#34;),
+    &#39;m&#39;: (&#34;metres&#34;, &#34;%f m&#34;, &#34;m&#34;),
+    &#39;mm&#39;: (&#34;millimetres&#34;, &#34;%f mm&#34;, &#34;mm&#34;),
+    &#39;ms&#39;: (&#34;milliseconds&#34;, &#34;%f ms&#34;, &#34;ms&#34;),
+    &#39;oct&#39;: (&#34;octaves&#34;, &#34;%f octaves&#34;, &#34;oct&#34;),
+    &#39;pc&#39;: (&#34;percent&#34;, &#34;%f%%&#34;, &#34;%&#34;),
+    &#39;semitone12TET&#39;: (&#34;semitones&#34;, &#34;%f semi&#34;, &#34;semi&#34;),
+    &#39;s&#39;: (&#34;seconds&#34;, &#34;%f s&#34;, &#34;s&#34;),
+}
+
+
+def node2str(node, strip=True):
+    &#34;&#34;&#34;Return lilv.Node to string.
+
+    By default, strips whitespace surrounding string value.
+
+    If passed node is None, return None.
+
+    &#34;&#34;&#34;
+    if node is not None:
+        node = str(node)
+
+        if strip:
+            node = node.strip()
+
+    return node
+
+
+def getfirst(obj, uri, strip=True):
+    &#34;&#34;&#34;Return string value of first item returned by obj.get_value(uri).
+
+    By default, strips whitespace surrounding string value.
+
+    If collection is empty, return None.
+
+    &#34;&#34;&#34;
+    data = obj.get_value(uri)
+
+    if data:
+        data = str(data[0])
+
+        if strip:
+            data = data.strip()
+
+        return data
+    else:
+        return None
+
+
+def _get_port_info(ctx, port):
+    world = ctx.world
+    warnings = ctx.warnings
+    errors = ctx.errors
+    portnames = ctx.portnames
+    portsymbols = ctx.portsymbols
+
+    # base data
+    portname = port.get_name()
+
+    if portname is None:
+        portname = &#34;_%i&#34; % index
+        errors.append(&#34;port with index %i has no name&#34; % index)
+    else:
+        portname = str(portname)
+
+    portsymbol = port.get_symbol()
+
+    if portsymbol is None:
+        portsymbol = &#34;_%i&#34; % index
+        errors.append(&#34;port with index %i has no symbol&#34; % index)
+    else:
+        portsymbol = str(portsymbol)
+
+    # check for duplicate names
+    if portname in portsymbols:
+        warnings.append(&#34;port name &#39;%s&#39; is not unique&#34; % portname)
+    else:
+        portnames.add(portname)
+
+    # check for duplicate symbols
+    if portsymbol in portsymbols:
+        errors.append(&#34;port symbol &#39;%s&#39; is not unique&#34; % portsymbol)
+    else:
+        portsymbols.add(portsymbol)
+
+    # short name
+    psname = getfirst(port, world.ns.lv2.shortName)
+
+    if psname is None:
+        psname = portname[:16]
+    elif len(psname) &gt; 16:
+        errors.append(
+            &#34;port &#39;%s&#39; short name has more than 16 characters&#34; % portname)
+
+    # check for old style shortName
+    if port.get_value(world.ns.lv2.shortname):
+        errors.append(
+            &#34;port &#39;%s&#39; short name is using old style &#39;shortname&#39; instead of &#39;shortName&#39;&#34; % portname)
+
+    # port types
+    types = [str(t).rsplit(&#34;#&#34;, 1)[-1][:-4]
+             for t in port.get_value(world.ns.rdf.type)]
+    buffer_type = port.get_value(world.ns.atom.bufferType)
+
+    if (&#34;Atom&#34; in types and port.supports_event(world.ns.midi.MidiEvent) and buffer_type
+            and str(buffer_type[0]) == world.ns.atom.Sequence):
+        types.append(&#34;MIDI&#34;)
+
+    # port comment
+    pcomment = getfirst(port, world.ns.rdfs.comment)
+
+    # port designation
+    designation = getfirst(port, world.ns.lv2.designation)
+
+    # port rangeSteps
+    rangesteps = getfirst(port, world.ns.mod.rangeSteps) or getfirst(
+        port, world.ns.pprops.rangeSteps)
+
+    # port properties
+    properties = sorted([str(t).rsplit(&#34;#&#34;, 1)[-1]
+                         for t in port.get_value(world.ns.lv2.portProperty)])
+
+    # data
+    ranges = {}
+    scalepoints = []
+
+    # control and cv must contain ranges, might contain scale points
+    if &#34;Control&#34; in types or &#34;CV&#34; in types:
+        is_int = &#34;integer&#34; in properties
+
+        if is_int and &#34;CV&#34; in types:
+            errors.append(
+                &#34;port &#39;%s&#39; has integer property and CV type&#34; % portname)
+
+        xdefault, xminimum, xmaximum = port.get_range()
+
+        if xminimum is not None and xmaximum is not None:
+            if is_int:
+                if xminimum.is_int():
+                    ranges[&#39;minimum&#39;] = int(xminimum)
+                else:
+                    ranges[&#39;minimum&#39;] = float(xminimum)
+                    if fmod(ranges[&#39;minimum&#39;], 1.0) == 0.0:
+                        warnings.append(
+                            &#34;port &#39;%s&#39; has integer property but minimum value is float&#34; % portname)
+                    else:
+                        errors.append(
+                            &#34;port &#39;%s&#39; has integer property but minimum value has non-zero decimals&#34; % portname)
+
+                    ranges[&#39;minimum&#39;] = int(ranges[&#39;minimum&#39;])
+
+                if xmaximum.is_int():
+                    ranges[&#39;maximum&#39;] = int(xmaximum)
+                else:
+                    ranges[&#39;maximum&#39;] = float(xmaximum)
+                    if fmod(ranges[&#39;maximum&#39;], 1.0) == 0.0:
+                        warnings.append(
+                            &#34;port &#39;%s&#39; has integer property but maximum value is float&#34; % portname)
+                    else:
+                        errors.append(
+                            &#34;port &#39;%s&#39; has integer property but maximum value has non-zero decimals&#34; % portname)
+
+                    ranges[&#39;maximum&#39;] = int(ranges[&#39;maximum&#39;])
+
+            else:
+                if xminimum.is_int():
+                    warnings.append(
+                        &#34;port &#39;%s&#39; minimum value is an integer&#34; % portname)
+                    ranges[&#39;minimum&#39;] = int(xminimum) * 1.0
+                else:
+                    ranges[&#39;minimum&#39;] = float(xminimum)
+
+                if xmaximum.is_int():
+                    warnings.append(
+                        &#34;port &#39;%s&#39; maximum value is an integer&#34; % portname)
+                    ranges[&#39;maximum&#39;] = int(xmaximum) * 1.0
+                else:
+                    ranges[&#39;maximum&#39;] = float(xmaximum)
+
+            if ranges[&#39;minimum&#39;] &gt;= ranges[&#39;maximum&#39;]:
+                ranges[&#39;maximum&#39;] = ranges[&#39;minimum&#39;] + (1 if is_int else 0.1)
+                errors.append(
+                    &#34;port &#39;%s&#39; minimum value is equal or higher than its maximum&#34; % portname)
+
+            if xdefault is not None:
+                if is_int:
+                    if xdefault.is_int():
+                        ranges[&#39;default&#39;] = int(xdefault)
+                    else:
+                        ranges[&#39;default&#39;] = float(xdefault)
+                        if fmod(ranges[&#39;default&#39;], 1.0) == 0.0:
+                            warnings.append(
+                                &#34;port &#39;%s&#39; has integer property but default value is float&#34; % portname)
+                        else:
+                            errors.append(
+                                &#34;port &#39;%s&#39; has integer property but default value has non-zero decimals&#34; % portname)
+                        ranges[&#39;default&#39;] = int(ranges[&#39;default&#39;])
+                else:
+                    if xdefault.is_int():
+                        warnings.append(
+                            &#34;port &#39;%s&#39; default value is an integer&#34; % portname)
+                        ranges[&#39;default&#39;] = int(xdefault) * 1.0
+                    else:
+                        ranges[&#39;default&#39;] = float(xdefault)
+
+                testmin = ranges[&#39;minimum&#39;]
+                testmax = ranges[&#39;maximum&#39;]
+
+                if &#34;sampleRate&#34; in properties:
+                    testmin *= 48000
+                    testmax *= 48000
+
+                if not (testmin &lt;= ranges[&#39;default&#39;] &lt;= testmax):
+                    ranges[&#39;default&#39;] = ranges[&#39;minimum&#39;]
+                    errors.append(
+                        &#34;port &#39;%s&#39; default value is out of bounds&#34; % portname)
+
+            else:
+                ranges[&#39;default&#39;] = ranges[&#39;minimum&#39;]
+
+                if &#34;Input&#34; in types:
+                    errors.append(
+                        &#34;port &#39;%s&#39; is missing default value&#34; % portname)
+
+        else:
+            if is_int:
+                ranges[&#39;minimum&#39;] = 0
+                ranges[&#39;maximum&#39;] = 1
+                ranges[&#39;default&#39;] = 0
+            else:
+                ranges[&#39;minimum&#39;] = -1.0 if &#34;CV&#34; in types else 0.0
+                ranges[&#39;maximum&#39;] = 1.0
+                ranges[&#39;default&#39;] = 0.0
+
+            if &#34;CV&#34; not in types and designation != str(world.ns.lv2.latency):
+                errors.append(&#34;port &#39;%s&#39; is missing value ranges&#34; % portname)
+
+        scalepoints = port.get_scale_points()
+
+        if scalepoints is not None:
+            scalepoints_unsorted = []
+
+            for sp in scalepoints:
+                label = node2str(sp.get_label())
+                value = sp.get_value()
+
+                if label is None:
+                    errors.append(&#34;a port scalepoint is missing its label&#34;)
+                    continue
+
+                if value is None:
+                    errors.append(
+                        &#34;port scalepoint &#39;%s&#39; is missing its value&#34; % label)
+                    continue
+
+                if is_int:
+                    if value.is_int():
+                        value = int(value)
+                    else:
+                        value = float(value)
+                        if fmod(value, 1.0) == 0.0:
+                            warnings.append(
+                                &#34;port &#39;%s&#39; has integer property but scalepoint &#39;%s&#39; value is float&#34; % (portname, label))
+                        else:
+                            errors.append(
+                                &#34;port &#39;%s&#39; has integer property but scalepoint &#39;%s&#39; value has non-zero decimals&#34; % (portname, label))
+                        value = int(value)
+                else:
+                    if value.is_int():
+                        warnings.append(
+                            &#34;port &#39;%s&#39; scalepoint &#39;%s&#39; value is an integer&#34; % (portname, label))
+                        value = int(value) * 1.0
+                    else:
+                        value = float(value)
+
+                if ranges[&#39;minimum&#39;] &lt;= value &lt;= ranges[&#39;maximum&#39;]:
+                    scalepoints_unsorted.append((value, label))
+                else:
+                    errors.append((&#34;port scalepoint &#39;%s&#39; has an out-of-bounds value:\n&#34; % label) +
+                                  (&#34;%d &lt; %d &lt; %d&#34; if is_int else &#34;%f &lt; %f &lt; %f&#34;) % (ranges[&#39;minimum&#39;], value, ranges[&#39;maximum&#39;]))
+
+            if scalepoints_unsorted:
+                unsorted = dict(s for s in scalepoints_unsorted)
+                values = list(s[0] for s in scalepoints_unsorted)
+                values.sort()
+                scalepoints = list(
+                    {&#39;value&#39;: v, &#39;label&#39;: unsorted[v]} for v in values)
+
+        if &#34;enumeration&#34; in properties and len(scalepoints) &lt;= 1:
+            errors.append(
+                &#34;port &#39;%s&#39; wants to use enumeration but doesn&#39;t have enough values&#34; % portname)
+            properties.remove(&#34;enumeration&#34;)
+
+    # control ports might contain unit
+    units = {}
+    if &#34;Control&#34; in types:
+        # unit
+        uunit = port.get_value(world.ns.units.unit)
+        ulabel = urender = usymbol = None
+
+        if uunit:
+            uuri = str(uunit[0])
+
+            # using pre-existing lv2 unit
+            if uuri.startswith(str(world.ns.units)):
+                uuri = uuri.rsplit(&#39;#&#39;, 1)[-1]
+
+                if uuri not in LV2_UNITS:
+                    errors.append(
+                        &#34;port &#39;%s&#39; has invalid lv2 unit &#39;%s&#39;&#34; % (portname, uuri))
+                else:
+                    ulabel, urender, usymbol = LV2_UNITS[uuri]
+
+            # using custom unit
+            else:
+                xlabel = world.find_nodes(uunit[0], world.ns.rdfs.label, None)
+                xrender = world.find_nodes(
+                    uunit[0], world.ns.units.render, None)
+                xsymbol = world.find_nodes(
+                    uunit[0], world.ns.units.symbol, None)
+
+                if xlabel:
+                    ulabel = str(xlabel[0])
+                else:
+                    errors.append(
+                        &#34;port &#39;%s&#39; has custom unit with no label&#34; % portname)
+
+                if xrender:
+                    urender = str(xrender[0])
+                else:
+                    errors.append(
+                        &#34;port &#39;%s&#39; has custom unit with no render&#34; % portname)
+
+                if xsymbol:
+                    usymbol = str(xsymbol[0])
+                else:
+                    errors.append(
+                        &#34;port &#39;%s&#39; has custom unit with no symbol&#34; % portname)
+
+        if ulabel and urender and usymbol:
+            units = {
+                &#39;label&#39;: ulabel,
+                &#39;render&#39;: urender,
+                &#39;symbol&#39;: usymbol,
+            }
+
+    return (types, {
+        &#39;name&#39;: portname,
+        &#39;symbol&#39;: portsymbol,
+        &#39;ranges&#39;: ranges,
+        &#39;units&#39;: units,
+        &#39;comment&#39;: pcomment,
+        &#39;designation&#39;: designation,
+        &#39;properties&#39;: properties,
+        &#39;rangeSteps&#39;: rangesteps,
+        &#39;scalePoints&#39;: scalepoints,
+        &#39;shortName&#39;: psname,
+    })
+
+
+def _get_plugin_ports(ctx, plugin):
+    index = 0
+    ports = {
+        &#39;audio&#39;: {
+            &#39;input&#39;: [],
+            &#39;output&#39;: []
+        },
+        &#39;control&#39;: {
+            &#39;input&#39;: [],
+            &#39;output&#39;: []
+        },
+        &#39;midi&#39;: {
+            &#39;input&#39;: [],
+            &#39;output&#39;: []
+        }
+    }
+
+    ctx.portsymbols = set()
+    ctx.portnames = set()
+
+    for i in range(plugin.get_num_ports()):
+        port = plugin.get_port_by_index(i)
+        types, info = _get_port_info(ctx, port)
+        info[&#39;index&#39;] = i
+
+        is_input = &#34;Input&#34; in types
+        types.remove(&#34;Input&#34; if is_input else &#34;Output&#34;)
+
+        for typ in [typl.lower() for typl in types]:
+            if typ not in ports.keys():
+                ports[typ] = {&#39;input&#39;: [], &#39;output&#39;: []}
+            ports[typ][&#34;input&#34; if is_input else &#34;output&#34;].append(info)
+
+    return ports
+
+
+def _get_plugin_presets(ctx, plugin):
+    world = ctx.world
+    presets = plugin.get_related(world.ns.presets.Preset)
+    preset_list = []
+
+    for preset in presets:
+        world.load_resource(preset)
+        labels = world.find_nodes(preset, world.ns.rdfs.label, None)
+
+        if labels:
+            label = str(labels[0])
+        else:
+            label = None
+            ctx.errors.append(&#34;Preset &#39;%s&#39; has no rdfs:label&#34; % preset)
+
+        preset_list.append({&#39;label&#39;: label, &#39;uri&#39;: str(preset)})
+
+    return sorted(preset_list, key=lambda x: x[&#39;label&#39;] or &#39;&#39;)
+
+
+def _get_plugin_properties(ctx, plugin_uri):
+    world = ctx.world
+
+    properties = {}
+    readable = [(node, False)
+                for node in world.find_nodes(plugin_uri, world.ns.patch.readable, None)]
+    writeable = [(node, True)
+                 for node in world.find_nodes(plugin_uri, world.ns.patch.writable, None)]
+
+    for prop_uri, is_writable in readable + writeable:
+        prop_node = world.find_nodes(
+            prop_uri, world.ns.rdf.type, world.ns.lv2.Parameter)
+
+        if not prop_node:
+            ctx.errors.append(
+                &#34;Could not find defintion of property &#39;%s&#39;.&#34; % prop_uri)
+            continue
+
+        label = world.find_nodes(prop_uri, world.ns.rdfs.label, None)
+
+        if label:
+            label = str(label[0])
+
+        range_ = world.find_nodes(prop_uri, world.ns.rdfs.range, None)
+
+        if range_:
+            range_ = str(range_[0])
+
+        prop_uri = str(prop_uri)
+        properties[prop_uri] = {
+            &#39;uri&#39;: prop_uri,
+            &#39;label&#39;: label,
+            &#39;type&#39;: range_,
+            &#39;writable&#39;: is_writable,
+        }
+
+    return properties
+
+
+def _get_plugin_info(ctx, plugin):
+    world = ctx.world
+    world.ns.mod = lilv.Namespace(world, NS_MOD)
+    world.ns.patch = lilv.Namespace(world, NS_PATCH)
+    world.ns.pprops = lilv.Namespace(world, NS_PORT_PROPERTIES)
+    world.ns.presets = lilv.Namespace(world, NS_PRESET)
+    world.ns.units = lilv.Namespace(world, NS_UNITS)
+
+    ctx.errors = errors = []
+    ctx.warnings = warnings = []
+
+    # uri
+    uri = plugin.get_uri()
+
+    if uri is None:
+        errors.append(&#34;plugin uri is missing or invalid&#34;)
+    elif str(uri).startswith(&#34;file:&#34;):
+        errors.append(
+            &#34;plugin uri is local, and thus not suitable for redistribution&#34;)
+
+    # load all resources in bundle
+    world.load_resource(uri)
+
+    # name
+    name = plugin.get_name()
+
+    if name is None:
+        errors.append(&#34;plugin name is missing&#34;)
+
+    # label
+    label = getfirst(plugin, world.ns.mod.label)
+
+    if label is None:
+        warnings.append(&#34;plugin label is missing&#34;)
+        if name is not None:
+            label = str(name)[:16]
+    elif len(label) &gt; 16:
+        warnings.append(&#34;plugin label has more than 16 characters&#34;)
+
+    # author
+    author_name = plugin.get_author_name()
+    author_email = plugin.get_author_email()
+    author_homepage = plugin.get_author_homepage()
+
+    # binary
+    binary = plugin.get_library_uri()
+
+    if binary is None:
+        errors.append(&#34;plugin binary is missing&#34;)
+    else:
+        binary = binary.get_path()
+
+    # brand
+    brand = getfirst(plugin, world.ns.mod.brand)
+
+    if brand is None:
+        warnings.append(&#34;plugin brand is missing&#34;)
+    elif len(brand) &gt; 16:
+        warnings.append(&#34;plugin brand has more than 11 characters&#34;)
+
+    # license
+    license = getfirst(plugin, world.ns.doap.license)
+
+    if license is None:
+        errors.append(&#34;plugin license is missing&#34;)
+
+    # comment
+    comment = getfirst(plugin, world.ns.rdfs.comment)
+
+    if comment is None:
+        errors.append(&#34;plugin comment is missing&#34;)
+
+    # version
+    microver = plugin.get_value(world.ns.lv2.microVersion)
+    minorver = plugin.get_value(world.ns.lv2.minorVersion)
+
+    if not microver and not minorver:
+        errors.append(&#34;plugin is missing version information&#34;)
+        minor_version = 0
+        micro_version = 0
+    else:
+        if not minorver:
+            errors.append(&#34;plugin is missing minorVersion&#34;)
+            minor_version = 0
+        else:
+            minor_version = int(minorver[0])
+
+        if not microver:
+            errors.append(&#34;plugin is missing microVersion&#34;)
+            micro_version = 0
+        else:
+            micro_version = int(microver[0])
+
+    version = &#34;%d.%d&#34; % (minor_version, micro_version)
+
+    if minor_version == 0:
+        # 0.x is experimental
+        stability = &#34;experimental&#34;
+    elif minor_version % 2 != 0 or micro_version % 2 != 0:
+        # odd x.2 or 2.x is testing/development
+        stability = &#34;testing&#34;
+    else:
+        # otherwise it&#39;s stable
+        stability = &#34;stable&#34;
+
+    # category
+    categories = plugin.get_value(world.ns.rdf.type)
+    category = set()
+
+    if categories:
+        for node in categories:
+            category.update(LV2_CATEGORIES.get(
+                str(node).split(&#39;#&#39;, 1)[-1], []))
+
+    # bundles
+    bundle = plugin.get_bundle_uri()
+    bundlepath = bundle.get_path().rstrip(os.sep)
+    bundles = plugin.get_data_uris()
+
+    if bundles:
+        bundles = {dirname(node.get_path().rstrip(os.sep)) for node in bundles}
+        bundles.add(bundlepath)
+        bundles = list(bundles)
+    else:
+        bundles = [bundlepath]
+
+    # ports
+    ports = _get_plugin_ports(ctx, plugin)
+
+    # presets
+    presets = _get_plugin_presets(ctx, plugin)
+
+    # properties
+    properties = _get_plugin_properties(ctx, uri)
+
+    return {
+        &#39;uri&#39;: node2str(uri),
+        &#39;name&#39;: node2str(name),
+        &#39;binary&#39;: binary,
+        &#39;brand&#39;: brand,
+        &#39;label&#39;: label,
+        &#39;license&#39;: license,
+        &#39;comment&#39;: comment,
+        &#39;category&#39;: list(category),
+        &#39;microVersion&#39;: micro_version,
+        &#39;minorVersion&#39;: minor_version,
+        &#39;version&#39;: version,
+        &#39;stability&#39;: stability,
+        &#39;author&#39;: {
+            &#39;name&#39;: node2str(author_name),
+            &#39;email&#39;: node2str(author_email),
+            &#39;homepage&#39;: node2str(author_homepage),
+        },
+        &#39;bundles&#39;: sorted(bundles),
+        # &#39;ui&#39;: ui,
+        &#39;ports&#39;: ports,
+        &#39;presets&#39;: presets,
+        &#39;properties&#39;: properties,
+        &#39;errors&#39;: sorted(errors),
+        &#39;warnings&#39;: sorted(warnings),
+    }
+
+
+def get_plugins_info(uri=None):
+    class _context():
+        pass
+
+    ctx = _context()
+    ctx.world = lilv.World()
+    ctx.world.load_all()
+    plugins = ctx.world.get_all_plugins()
+
+    if uri:
+        uri = ctx.world.new_uri(uri)
+        return _get_plugin_info(ctx, plugins[uri])
+    else:
+        return [_get_plugin_info(ctx, p) for p in plugins]
+
+
+def main(args=None):
+    import argparse
+    import pprint
+    import json
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        &#39;-d&#39;, &#39;--debug&#39;,
+        action=&#34;store_true&#34;,
+        help=&#34;Print debugging information to standard error&#34;)
+    ap.add_argument(
+        &#39;-p&#39;, &#39;--pretty-format&#39;,
+        action=&#34;store_true&#34;,
+        help=&#34;Pretty format JSON output&#34;)
+    ap.add_argument(
+        &#39;plugin_uri&#39;,
+        nargs=&#39;?&#39;,
+        metavar=&#39;URI&#39;, help=&#39;Plugin URI&#39;)
+
+    args = ap.parse_args(args)
+    plugin_data = get_plugins_info(args.plugin_uri)
+
+    if args.debug:
+        print(pprint.pformat(plugin_data), file=sys.stderr)
+
+    if args.pretty_format:
+        kw = {&#39;indent&#39;: 4}
+    else:
+        kw = {}
+
+    print(json.dumps(plugin_data, sort_keys=True, **kw))
+
+
+if __name__ == &#39;__main__&#39;:
+    import sys
+
+    sys.exit(main() or 0)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="calvo_cli_tools.lv2.plugin_info.get_plugins_info"><code class="name flex">
+<span>def <span class="ident">get_plugins_info</span></span>(<span>uri=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_plugins_info(uri=None):
+    class _context():
+        pass
+
+    ctx = _context()
+    ctx.world = lilv.World()
+    ctx.world.load_all()
+    plugins = ctx.world.get_all_plugins()
+
+    if uri:
+        uri = ctx.world.new_uri(uri)
+        return _get_plugin_info(ctx, plugins[uri])
+    else:
+        return [_get_plugin_info(ctx, p) for p in plugins]</code></pre>
+</details>
+</dd>
+<dt id="calvo_cli_tools.lv2.plugin_info.getfirst"><code class="name flex">
+<span>def <span class="ident">getfirst</span></span>(<span>obj, uri, strip=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return string value of first item returned by obj.get_value(uri).</p>
+<p>By default, strips whitespace surrounding string value.</p>
+<p>If collection is empty, return None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getfirst(obj, uri, strip=True):
+    &#34;&#34;&#34;Return string value of first item returned by obj.get_value(uri).
+
+    By default, strips whitespace surrounding string value.
+
+    If collection is empty, return None.
+
+    &#34;&#34;&#34;
+    data = obj.get_value(uri)
+
+    if data:
+        data = str(data[0])
+
+        if strip:
+            data = data.strip()
+
+        return data
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="calvo_cli_tools.lv2.plugin_info.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>args=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main(args=None):
+    import argparse
+    import pprint
+    import json
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        &#39;-d&#39;, &#39;--debug&#39;,
+        action=&#34;store_true&#34;,
+        help=&#34;Print debugging information to standard error&#34;)
+    ap.add_argument(
+        &#39;-p&#39;, &#39;--pretty-format&#39;,
+        action=&#34;store_true&#34;,
+        help=&#34;Pretty format JSON output&#34;)
+    ap.add_argument(
+        &#39;plugin_uri&#39;,
+        nargs=&#39;?&#39;,
+        metavar=&#39;URI&#39;, help=&#39;Plugin URI&#39;)
+
+    args = ap.parse_args(args)
+    plugin_data = get_plugins_info(args.plugin_uri)
+
+    if args.debug:
+        print(pprint.pformat(plugin_data), file=sys.stderr)
+
+    if args.pretty_format:
+        kw = {&#39;indent&#39;: 4}
+    else:
+        kw = {}
+
+    print(json.dumps(plugin_data, sort_keys=True, **kw))</code></pre>
+</details>
+</dd>
+<dt id="calvo_cli_tools.lv2.plugin_info.node2str"><code class="name flex">
+<span>def <span class="ident">node2str</span></span>(<span>node, strip=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return lilv.Node to string.</p>
+<p>By default, strips whitespace surrounding string value.</p>
+<p>If passed node is None, return None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def node2str(node, strip=True):
+    &#34;&#34;&#34;Return lilv.Node to string.
+
+    By default, strips whitespace surrounding string value.
+
+    If passed node is None, return None.
+
+    &#34;&#34;&#34;
+    if node is not None:
+        node = str(node)
+
+        if strip:
+            node = node.strip()
+
+    return node</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="calvo_cli_tools.lv2" href="index.html">calvo_cli_tools.lv2</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="calvo_cli_tools.lv2.plugin_info.get_plugins_info" href="#calvo_cli_tools.lv2.plugin_info.get_plugins_info">get_plugins_info</a></code></li>
+<li><code><a title="calvo_cli_tools.lv2.plugin_info.getfirst" href="#calvo_cli_tools.lv2.plugin_info.getfirst">getfirst</a></code></li>
+<li><code><a title="calvo_cli_tools.lv2.plugin_info.main" href="#calvo_cli_tools.lv2.plugin_info.main">main</a></code></li>
+<li><code><a title="calvo_cli_tools.lv2.plugin_info.node2str" href="#calvo_cli_tools.lv2.plugin_info.node2str">node2str</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
+</footer>
+</body>
+</html>
