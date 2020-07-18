@@ -23,19 +23,26 @@ def clear_port(port, client_name="jack_client", **kwarg):
     except jack.JackError as exc:
         raise ConnectionError("Could not create JACK client: {}".format(exc))
 
-    try:
-        jack_port = client.get_port_by_name(port)
-        jack_ports = client.get_all_connections(port)
+    src_ports_names = port.split(',')
 
-        for cport in jack_ports:
-            connect_ports(
-                port.name, cport.name, client_name, True)
+    for src_port_name in src_ports_names:
+        try:
+            jack_port = client.get_port_by_name(src_port_name)
+            jack_ports = client.get_all_connections(jack_port)
 
-    except jack.JackError as exc:
-        raise ValueError("Could not create JACK client: {}".format(exc))
+            for cport in jack_ports:
+                if jack_port.is_output:
+                    connect_ports(
+                        src_port_name, cport.name, client_name, True)
+                elif jack_port.is_input:
+                    connect_ports(
+                        cport.name, src_port_name, client_name, True)
+
+        except jack.JackError as exc:
+            raise ValueError("Could not clear port: {}".format(exc))
 
 
-def connect_ports(source, destination, client_name, disconnect=False, **kwarg):
+def connect_ports(source, destination, client_name, disconnect=False, quiet=False, **kwarg):
     """ Connects/Disconnects two JACK ports.
 
     Parameters
@@ -48,6 +55,8 @@ def connect_ports(source, destination, client_name, disconnect=False, **kwarg):
         JACK Client name.
     disconnect: bool, optional
         Perform a disconnection instead, by default False
+    quiet: bool, optional
+        Do not raise exception is the connection cannot be made due to (non)exisiting connections between the ports, by default False.
 
     Raises
     ------
@@ -67,6 +76,8 @@ def connect_ports(source, destination, client_name, disconnect=False, **kwarg):
     try:
         src_port = client.get_port_by_name(source)
         dst_port = client.get_port_by_name(destination)
+        src_connections = client.get_all_connections(src_port)
+
     except jack.JackError as exc:
         raise ValueError("Could not get JACK port: {}".format(exc))
 
@@ -90,14 +101,24 @@ def connect_ports(source, destination, client_name, disconnect=False, **kwarg):
         raise TypeError(
             'Error connecting ports: Both ports are expected to be the same type.')
 
-    try:
-        if not disconnect:
+    if not disconnect:
+        try:
             client.connect(src_port, dst_port)
-        else:
+        except jack.JackError as exc:
+            raise ValueError(
+                f'Could not make the connection between {source} => {destination} : {exc}')
+    else:
+        existingConnection = False
+        for port in src_connections:
+            if port == dst_port:
+                existingConnection = True
+                break
+        if existingConnection:
             client.disconnect(src_port, dst_port)
-    except jack.JackError as exc:
-        raise ValueError(
-            f'Could not make the connection between {source} => {destination} : {exc}')
+        else:
+            if not quiet:
+                raise ValueError(
+                    f'Could not make the connection between {source} => {destination} : {exc}')
 
 
 if __name__ == '__main__':
@@ -111,8 +132,9 @@ if __name__ == '__main__':
 
     # Clear port
     parser_clear_port = subparses.add_parser(
-        'clear', help='Remove all connections from a port')
-    parser_clear_port.add_argument('port', help='Port to clear.')
+        'clear', help='Remove all connections from a port or a comma separated lists of ports')
+    parser_clear_port.add_argument(
+        'port', help='Port or comma separated list of ports to clear.')
     parser_clear_port.set_defaults(func=clear_port)
 
     # Connect ports
@@ -130,9 +152,13 @@ if __name__ == '__main__':
         action='store_true',
         default=False,
         help="Disconnect both ports.")
+    parser_connect.add_argument(
+        '-q', '--quiet',
+        action='store_true',
+        default=False,
+        help="Do not raise exception is the connection cannot be made due to (non)exisiting connections between the ports")
 
     parser_connect.set_defaults(func=connect_ports)
 
     arguments = parser.parse_args()
-    print(arguments)
     arguments.func(**vars(arguments))
