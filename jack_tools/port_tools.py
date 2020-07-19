@@ -1,9 +1,8 @@
-
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """Assorted tools for handling a JACK port"""
 
 import jack
-import json
+import sys
 import argparse
 
 
@@ -160,5 +159,8 @@ if __name__ == '__main__':
 
     parser_connect.set_defaults(func=connect_ports)
 
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
     arguments = parser.parse_args()
     arguments.func(**vars(arguments))

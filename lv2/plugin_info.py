@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # MIT License
 
 # Copyright (c) 2019 Christopher Arndt
@@ -20,7 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#!/usr/bin/env python
 """Generate JSON document with information about a single or all installed LV2 plugins."""
 
 import os
