@@ -23,7 +23,6 @@ def clear_port(port, client_name="jack_client", **kwarg):
         raise ConnectionError("Could not create JACK client: {}".format(exc))
 
     src_ports_names = port.split(',')
-
     for src_port_name in src_ports_names:
         try:
             jack_port = client.get_port_by_name(src_port_name)
@@ -37,8 +36,8 @@ def clear_port(port, client_name="jack_client", **kwarg):
                     connect_ports(
                         cport.name, src_port_name, client_name, True)
 
-        except jack.JackError as exc:
-            raise ValueError("Could not clear port: {}".format(exc))
+        except jack.JackError as exc2:
+            raise ValueError("Could not clear port: {}".format(exc2))
 
 
 def connect_ports(source, destination, client_name, disconnect=False, quiet=False, **kwarg):
@@ -103,9 +102,9 @@ def connect_ports(source, destination, client_name, disconnect=False, quiet=Fals
     if not disconnect:
         try:
             client.connect(src_port, dst_port)
-        except jack.JackError as exc:
+        except jack.JackError as exc2:
             raise ValueError(
-                f'Could not make the connection between {source} => {destination} : {exc}')
+                f'Could not make the connection between {source} => {destination} : {exc2}')
     else:
         existingConnection = False
         for port in src_connections:
@@ -117,7 +116,7 @@ def connect_ports(source, destination, client_name, disconnect=False, quiet=Fals
         else:
             if not quiet:
                 raise ValueError(
-                    f'Could not make the connection between {source} => {destination} : {exc}')
+                    f'Could not make the connection between {source} => {destination}')
 
 
 if __name__ == '__main__':
